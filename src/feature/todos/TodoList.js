@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleComplete,toggleDelete } from "../todos/todoSlice";
+import { toggleComplete,toggleDelete,selectFilteredTodoIds } from "../todos/todoSlice";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -10,26 +10,27 @@ import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import "./TodoList.scss";
+import store from "../../store"
 export const TodoList = () => {
-  const todos = useSelector((state) => state.todos.entities);
+  const todoEntities=store.getState().todos.entities
+  const todoIds = useSelector(selectFilteredTodoIds)
   const dispatch = useDispatch();
-
   return (
     <div className="container">
       <List
         sx={{ width: "400px", bgcolor: "background.paper" }}
       >
-        {Object.values(todos).map((value, index) => {
-          const labelId = `checkbox-list-label-${index}`;
+        {Object.values(todoIds).map((value) => {
+          const labelId = `checkbox-list-label-${value}`;
           const handleComplete = () => {
             dispatch(toggleComplete(value));
           };
           const handleDelete = ()=>{
-            dispatch(toggleDelete(value.id));
+            dispatch(toggleDelete(value));
           }
           return (
             <ListItem
-              key={index}
+              key={value}
               secondaryAction={
                 <IconButton
                   edge="end"
@@ -45,16 +46,16 @@ export const TodoList = () => {
                 <ListItemIcon>
                   <Checkbox
                     edge="start"
-                    checked={value.complete}
+                    checked={todoEntities[value].complete}
                     tabIndex={-1}
                     disableRipple
                     inputProps={{ "aria-labelledby": labelId }}
                   />
                 </ListItemIcon>
                 <ListItemText
-                sx={(value.complete)?{textDecoration: 'line-through'}:{textDecoration: 'none'}}
+                sx={(todoEntities[value].complete)?{textDecoration: 'line-through'}:{textDecoration: 'none'}}
                   id={labelId}
-                  primary={`Task ${index + 1} : ${value.todo} `}
+                  primary={`Task ${value + 1} : ${value.todo} `}
                 />
               </ListItemButton>
             </ListItem>
