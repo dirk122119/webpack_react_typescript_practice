@@ -1,7 +1,7 @@
 const path = require("path");
 
 module.exports = {
-  entry: "./src/index.tsx",
+  entry: "./src/index.js",
   devtool: "inline-source-map",
 //   mode:'development',
   module: {
@@ -30,6 +30,16 @@ module.exports = {
           // 將 Sass 轉換為 CSS
           'sass-loader',
         ],
+      },
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+          },
+        },
       },
     ],
   },
