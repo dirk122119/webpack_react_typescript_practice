@@ -1,9 +1,10 @@
 const path = require("path");
+const Dotenv = require("dotenv-webpack");
 
 module.exports = {
   entry: "./src/index.js",
   devtool: "inline-source-map",
-//   mode:'development',
+  //   mode:'development',
   module: {
     rules: [
       {
@@ -13,10 +14,14 @@ module.exports = {
       {
         test: /\.(ts|tsx)$/,
         use: {
-            loader: 'babel-loader',
-            options: {
-                presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
-              },
+          loader: "babel-loader",
+          options: {
+            presets: [
+              "@babel/preset-env",
+              "@babel/preset-react",
+              "@babel/preset-typescript",
+            ],
+          },
         },
         exclude: /node_modules/,
       },
@@ -24,27 +29,27 @@ module.exports = {
         test: /\.s[ac]ss$/i,
         use: [
           // 將 CSS 添加到 DOM 中
-          'style-loader',
+          "style-loader",
           // 解析 CSS 中的 `@import` 和 `url()`
-          'css-loader',
+          "css-loader",
           // 將 Sass 轉換為 CSS
-          'sass-loader',
+          "sass-loader",
         ],
       },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react'],
+            presets: ["@babel/preset-env", "@babel/preset-react"],
           },
         },
       },
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js",".jsx"],
+    extensions: [".tsx", ".ts", ".js", ".jsx"],
   },
   devServer: {
     static: "./dist",
@@ -59,6 +64,7 @@ module.exports = {
   performance: {
     hints: false,
     maxEntrypointSize: 512000,
-    maxAssetSize: 512000
-}
+    maxAssetSize: 512000,
+  },
+  plugins: [new Dotenv()],
 };

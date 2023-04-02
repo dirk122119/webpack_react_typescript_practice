@@ -8,7 +8,6 @@ export const StatusFilters = {
 
 const initialState = {
     status: StatusFilters.All,
-    user:""
   }
 
 const filtersSlice = createSlice({

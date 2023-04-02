@@ -1,19 +1,22 @@
 import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { statusFilterChanged } from "./filtersSlice";
+import { statusFilterChanged,StatusFilters } from "./filtersSlice";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import {StatusFilters} from "./filtersSlice"
+import Typography from "@mui/material/Typography";
 
 export const StateFiliters = () => {
   const dispatch = useDispatch();
   const status = useSelector((state) => state.filters);
+  const userStatus = useSelector((state) => state.user.user)
   const handleButtonClick =(e)=>{
     dispatch(statusFilterChanged(e.target.innerText))
   }
   return (
     <div className="container">
+     
       <Stack spacing={2} direction="row">
+      
         {Object.keys(StatusFilters).map((key) => {
             if(StatusFilters[key]===status.status)
             {

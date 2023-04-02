@@ -8,11 +8,11 @@ import "./InpuTText.scss"
 import { useSelector, useDispatch } from 'react-redux'
 import {saveNewTodo} from "../todos/todoSlice"
 import store from '../../store'
-
 function InputText() {
   const [text, setText] = React.useState("");
   const dispatch = useDispatch()
   let todos = useSelector((state) => state.todos.entities);
+  const userStatus = useSelector((state) => state.user.user)
   const handleChange = (e)=>{setText(e.target.value);}
 
   const handleKeyDown = (e)=>{
@@ -32,12 +32,14 @@ function InputText() {
     let todoArray = Object.values(todos)
     const maxId = todoArray.reduce((maxId, todo) => Math.max(todo.id, maxId),-1)
 
-    dispatch(saveNewTodo({"todo":text,"complete":false,"user":"guest","id":maxId+1}))
+    dispatch(saveNewTodo({"id":maxId+1,"todo":text,"complete":false,"user":userStatus}))
     console.log(store.getState())
     setText("")
   }
 
   return (
+    <>
+    <div className="container"><h3>This is {userStatus}'s todo list,you can regist and login to create your own todo list</h3></div>
     <div className="container">
       <Paper
         elevation={2}
@@ -69,6 +71,7 @@ function InputText() {
       <Divider sx={{ margin: "10px" }} />
 
     </div>
+    </>
   );
 }
 
