@@ -4,7 +4,7 @@ import InputBase from "@mui/material/InputBase";
 import AddIcon from "@mui/icons-material/Add";
 import IconButton from "@mui/material/IconButton";
 import Divider from "@mui/material/Divider";
-import "./InpuTText.scss"
+import "./InputText.scss"
 import { useSelector, useDispatch } from 'react-redux'
 import {saveNewTodo} from "../todos/todoSlice"
 import store from '../../store'
