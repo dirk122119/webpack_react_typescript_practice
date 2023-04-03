@@ -67,9 +67,13 @@ const todosSlice = createSlice({
         todosAdapter.addOne(state,action.payload)
         state.status = "idle";
       })
+      .addCase(toggleComplete.pending, (state, action) => {
+        state.status = "loading";
+      })
       .addCase(toggleComplete.fulfilled, (state, action) => {
         const todo = state.entities[action.payload];
         todo.complete = !todo.complete;
+        state.status = "idle";
       })
       .addCase(toggleDelete.fulfilled, (state, action) => {
         todosAdapter.removeOne(state,action.payload)
