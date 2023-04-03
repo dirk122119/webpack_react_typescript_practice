@@ -1,9 +1,17 @@
+body {
+    margin: 0px;
+}
 main{
     color:green;
     div { 
         color: salmon;
     }
 }
-h1 {
-    color: blueviolet;
-  }
+section {
+    display: flex;
+	flex-direction: column;
+    div {
+        margin: 10px;
+    }
+
+}
