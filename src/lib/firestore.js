@@ -3,7 +3,7 @@ import { getFirestore } from "firebase/firestore";
 import {getAuth} from 'firebase/auth';
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://support.google.com/firebase/answer/7015592
-const firebaseConfig = {
+export const firebaseConfig = {
     apiKey: process.env.Firebase_apiKey,
     authDomain:process.env.Firebase_authDomain,
     projectId: process.env.Firebase_projectId,
@@ -13,6 +13,6 @@ const firebaseConfig = {
     measurementId:process.env.Firebase_measurementId
   };
 
-  const app = initializeApp(firebaseConfig);
+  export const app = initializeApp(firebaseConfig);
   export const db = getFirestore(app);
   export const auth = getAuth(app);
