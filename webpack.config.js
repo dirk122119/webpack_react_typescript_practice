@@ -5,6 +5,7 @@ module.exports = {
   entry: "./src/index.js",
   devtool: "inline-source-map",
   //   mode:'development',
+  cache: false,
   module: {
     rules: [
       {
@@ -21,6 +22,7 @@ module.exports = {
               "@babel/preset-react",
               "@babel/preset-typescript",
             ],
+            cacheDirectory: false,
           },
         },
         exclude: /node_modules/,
