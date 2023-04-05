@@ -58,7 +58,7 @@ module.exports = {
     port: 9000,
   },
   output: {
-    filename: "boundle.js",
+    filename: "boundle.ts",
     path: path.resolve(__dirname, "dist"),
   },
   performance: {
