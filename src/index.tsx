@@ -1,29 +1,28 @@
-import * as React from 'react';
-import { render } from 'react-dom';
-import {Hello} from "./components/Hello";
-import ThemeContext from './components/ThemeContext';
-import Child from "./components/Child"
-import {Test} from "./components/TestComponent"
-import { createRoot } from 'react-dom/client';
+import * as React from "react";
+import { createRoot } from "react-dom/client";
+import { Provider,useSelector } from "react-redux";
+import { Navbar } from "./components/Navbar";
+import { InputText } from "./feature/inputText/InputText";
+import {TodoList} from "./feature/todos/TodoList"
+import "./style.scss";
+import store from "./app/store"
+import {StateFiliters} from "./feature/filiters/StateFilters"
 
-const APP = () => {
-  const [theme, setTheme] = React.useState('light');
-
-  function toggleTheme() {
-    setTheme(theme === 'light' ? 'dark' : 'light');
-  }
+import { fetchTodos } from "./feature/todos/todoSlice";
+const App = () => {
+  
+  store.dispatch(fetchTodos())
   
   return (
-    <ThemeContext.Provider value={theme}>
-      <button onClick={toggleTheme}>Toggle Theme</button>
-      <Child />
-    </ThemeContext.Provider>
+    <Provider store={store}>
+      <Navbar />
+      <InputText />
+      <StateFiliters/>
+      <TodoList />
+      
+    </Provider>
   );
-}
+};
 
-const HelloAPP = ()=>(<Test></Test>)
-
-const root = createRoot(document.getElementById('root'));
-const hello = createRoot(document.getElementById('hello'));
-root.render(<APP/>);
-hello.render(<HelloAPP/>);
+const hello = createRoot(document.getElementById("hello"));
+hello.render(<App />);
