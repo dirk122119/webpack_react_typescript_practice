@@ -79,7 +79,7 @@ const todosSlice = createSlice({
         state.status = "loading";
       })
       .addCase(toggleComplete.fulfilled, (state, action:PayloadAction<number>) => {
-        const todo= state.entities[action.payload];
+        const todo:any= state.entities[action.payload];
         todo.complete = !todo.complete;
         state.status = "idle";
       })
@@ -98,13 +98,13 @@ export const selectFilterTodos = createSelector(
   (todos, filters,user) => {
     const showAllCompletions = filters.status === StatusFilters.All;
     if (showAllCompletions) {
-      return todos.filter((todo)=>{
+      return todos.filter((todo:any)=>{
         const userMatches = todo.user === user.user
         return userMatches
       });
     } else {
       const completedStatus = filters.status === StatusFilters.Completed;
-      return todos.filter((todo) => {
+      return todos.filter((todo:any) => {
         const statusMatches= todo.complete === completedStatus;
         const userMatches = todo.user === user.user
         return statusMatches && userMatches;
@@ -117,5 +117,5 @@ export const selectFilteredTodoIds = createSelector(
   // Pass our other memoized selector as an input
   selectFilterTodos,
   // And derive data in the output selector
-  (filterTodos) => filterTodos.map((todo) => todo.id)
+  (filterTodos) => filterTodos.map((todo:any) => todo.id)
 );

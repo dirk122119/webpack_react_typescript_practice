@@ -11,11 +11,11 @@ import { useAppSelector, useAppDispatch } from "../../app/hooks"
 function InputText() {
   const [text, setText] = React.useState("");
   const dispatch = useAppDispatch()
-  let todos = useAppSelector((state) => state.todos.entities);
+  const todos = useAppSelector((state) => state.todos.entities);
   const userStatus = useAppSelector((state) => state.user.user)
-  const handleChange = (e)=>{setText(e.target.value);}
+  const handleChange = (e:React.ChangeEvent<HTMLInputElement>)=>{setText(e.target.value);}
 
-  const handleKeyDown = (e)=>{
+  const handleKeyDown = (e:React.KeyboardEvent<HTMLInputElement>)=>{
     const trimmedText = text.trim()
     if (e.which === 13 && trimmedText) {
         e.preventDefault();
@@ -28,12 +28,11 @@ function InputText() {
   }
 
   const addNewOne=()=>{
-    let objectLength=Object.keys(todos).length
     let todoArray = Object.values(todos)
-    const maxId = todoArray.reduce((maxId:number, todo) => Math.max(todo.id, maxId),-1)
+    const maxId = todoArray.reduce((maxId:number, todo:any) => Math.max(todo.id, maxId),-1)
 
     dispatch(saveNewTodo({"id":maxId+1,"todo":text,"complete":false,"user":userStatus}))
-    console.log(store.getState())
+    return maxId+1
     setText("")
   }
 

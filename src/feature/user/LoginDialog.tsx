@@ -13,29 +13,39 @@ import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../../lib/firestore";
 import {useAppDispatch } from "../../app/hooks"
 import {statusUser} from "./userSlice"
 
-const Alert = React.forwardRef(function Alert(props, ref) {
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref,
+) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-
-export default function LoginDialog(props) {
-  const [UserName, setUserName] = React.useState("");
-  const [Password, setPassword] = React.useState("");
+export const fetchUser = async (q:any) =>{
+  const querySnapshot = await getDocs(q);
+  return querySnapshot
+}
+interface Props {
+  open: boolean;
+  close: ()=>void;
+}
+export default function LoginDialog(props:Props) {
+  const [UserName, setUserName] = React.useState("admin");
+  const [Password, setPassword] = React.useState("admin");
   const [showPassword, setShowPassword] = React.useState(false);
   const [SnackbarOpen, setSnackbarOpen] = React.useState(false);
-  const [SnackbarSeverity, setSnackbarSeverity] = React.useState("success");
+  const [SnackbarSeverity, setSnackbarSeverity] = React.useState<"success"|"error">("success");
   const [SnackbarText, setSnackbarText] = React.useState("SnackbarText");
   const dispatch = useAppDispatch();
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleClose = () => {
     props.close();
   };
-  const handleSnackClose = (event, reason) => {
+  const handleSnackClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
       return;
     }
@@ -48,12 +58,12 @@ export default function LoginDialog(props) {
         collection(db, "users"),
         where("username", "==", UserName)
       );
-      const querySnapshot = await getDocs(q);
+      const querySnapshot:any = await fetchUser(q);
       if (querySnapshot.docs.length > 0 && querySnapshot.docs[0].data().password===Password)
       {
         dispatch(statusUser(UserName))
-        setUserName("");
-        setPassword("");
+        setUserName("admin");
+        setPassword("admin");
         setSnackbarSeverity("success");
         setSnackbarText("登入成功");
         setSnackbarOpen(true);
@@ -66,6 +76,7 @@ export default function LoginDialog(props) {
       }
     }
   };
+
   return (
     <>
       <Dialog
@@ -73,7 +84,7 @@ export default function LoginDialog(props) {
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle id="responsive-dialog-title">註冊使用者</DialogTitle>
+        <DialogTitle id="responsive-dialog-title">使用者登入</DialogTitle>
         <DialogContent dividers>
           <TextField
             id="name"
@@ -83,6 +94,7 @@ export default function LoginDialog(props) {
             onChange={(event) => {
               setUserName(event.target.value);
             }}
+            value={UserName}
           />
           <FormControl
             sx={{ marginTop: "10px" }}
@@ -111,6 +123,7 @@ export default function LoginDialog(props) {
               onChange={(event) => {
                 setPassword(event.target.value);
               }}
+              value={Password}
             />
           </FormControl>
         </DialogContent>

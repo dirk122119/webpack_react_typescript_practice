@@ -13,21 +13,28 @@ import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
+import MuiAlert , { AlertProps } from "@mui/material/Alert";
 import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../../lib/firestore";
 
-const Alert = React.forwardRef(function Alert(props, ref) {
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref,
+) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-export default function RegisterDialog(props) {
+interface Props {
+  open: boolean;
+  close: ()=>void;
+}
+export default function RegisterDialog(props:Props) {
   const [UserName, setUserName] = React.useState("");
   const [Password, setPassword] = React.useState("");
   const [PasswordCheck, setPasswordCheck] = React.useState("");
   const [showPassword, setShowPassword] = React.useState(false);
   const [showPasswordCheck, setShowPasswordCheck] = React.useState(false);
   const [SnackbarOpen, setSnackbarOpen] = React.useState(false);
-  const [SnackbarSeverity, setSnackbarSeverity] = React.useState("success");
+  const [SnackbarSeverity, setSnackbarSeverity] = React.useState<"success"|"error">("success");
   const [SnackbarText, setSnackbarText] = React.useState("SnackbarText");
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleClickShowPasswordCheck = () =>
@@ -67,7 +74,7 @@ export default function RegisterDialog(props) {
         setSnackbarOpen(true);
     }
   };
-  const handleSnackClose = (event, reason) => {
+  const handleSnackClose = (vent?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
       return;
     }

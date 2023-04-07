@@ -1,5 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+interface Status  {
+  payload: "All"|"Active"|"Completed";
+  type: string;
+}
+
 export const StatusFilters = {
   All: 'all',
   Active: 'active',
@@ -14,7 +19,7 @@ const filtersSlice = createSlice({
   name:"filters",
   initialState,
   reducers:{
-    statusFilterChanged(state,action){
+    statusFilterChanged(state,action:Status){
       state.status = StatusFilters[action.payload]
     }
   }
