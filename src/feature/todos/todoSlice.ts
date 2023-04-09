@@ -10,7 +10,7 @@ import { StatusFilters } from "../filiters/filtersSlice";
 import { db } from "../../lib/firestore";
 import { collection, getDocs,setDoc,doc,updateDoc,getDoc,deleteDoc } from "firebase/firestore";
 
-interface Todo {
+ interface Todo {
   id: number;
   todo: string;
   user:string;
